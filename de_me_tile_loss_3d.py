@@ -384,7 +384,7 @@ class DE_ME:
         b1 = ray.put(self._bin1)
         b2 = ray.put(self._bin2)
         b3 = ray.put(self._bin3)
-        futures=[apply_mutation.remote(c, arc, n_seg, modl, ds, sf, cr, b1, b2, b3) for c in range(96)]
+        futures=[apply_mutation.remote(c, arc, n_seg, modl, ds, sf, cr, b1, b2, b3) for c in range(100)]
         #results = ray.get(futures)
         #for r in results:
         #   self._map.add(r)
@@ -406,7 +406,7 @@ def main():
 
     pop_size = 100
     no_seg = 1
-    generations = 10417
+    generations = 10000
     sf = 0.2
     cr = 0.5
     # bounds = [(-1, 1)] * (64 * no_seg)
@@ -445,7 +445,7 @@ def main():
             "bin1": str(bin1),
             "bin2": str(bin2),
             "bin3": str(bin3),
-            "playability": "astar, 3, 50",
+            "playability": "astar, 4, 50",
             "init": "random uniform -10,10"
         }
         f.write(json.dumps(temp))
@@ -458,9 +458,8 @@ def main():
         text_file = open(save_path + exp + "/log.txt", "a")
         text_file.write("Gen: {} - {} \n".format(g, str(de_me._map)))
         text_file.close()
-        #if g % 100 == 0:
-        #    print("Gen: {} - {}".format(g, str(de_me._map)))
-        if g % 100:
+        if g % 100 == 0:
+            print("Gen: {} - {}".format(g, str(de_me._map)))
             de_me.save(save_path + exp)
     print("Gen: {} - {}".format(g, str(de_me._map)))
     de_me.save(save_path + exp)
