@@ -129,7 +129,7 @@ def find_tube_issues(lvl):
 def calc_fitness(latent_arr, no_seg, model, dataset, bin1, bin2, bin3):
     segments, lvl, tns_output = gen_level(latent_arr, no_seg, model)
 
-    result = runLevel(lvl, "astar", 3, 50, True)
+    result = runLevel(lvl, "astar", 4, 50, True)
     playability = result.getCompletionPercentage()
     tube_error = find_tube_issues(lvl)
     fitness_1 = playability - 0.025*tube_error
@@ -357,26 +357,6 @@ class DE_ME:
             self._map.add(c)
 
     def run_de_me(self, sf, cr, bounds):
-        '''target, donor1, donor2, donor3 = self._map.random_sample()
-        r1 = donor1._genes
-        r2 = donor2._genes
-        r3 = donor3._genes
-
-        x_diff = [r2_j - r3_j for r2_j, r3_j in zip(r2, r3)]
-        mutant = [r1_j + sf * x_diff_j for r1_j, x_diff_j in zip(r1, x_diff)]
-        # mutant = ensure_bounds(mutant, bounds)
-
-        trial = []
-        for j in range(len(target._genes)):
-            if random() <= cr:
-                trial.append(mutant[j])
-            else:
-                trial.append(target._genes[j])
-        trial = np.asarray(trial)
-
-        trial_chromosome = Chromosome(trial, target._genes)
-        trial_chromosome.eval(self._no_seg, self._model, self._dataset, self._bin1, self._bin2, self._bin3)
-        self._map.add(trial_chromosome)'''
         arc = ray.put(self._map)
         n_seg = ray.put(self._no_seg)
         modl = ray.put(self._model)
